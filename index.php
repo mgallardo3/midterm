@@ -32,10 +32,35 @@ $f3->route('GET /', function()
 });
 
 //Add a post route
-$f3->route('GET|POST /survey', FUNCTION()
+$f3->route('GET|POST /survey', FUNCTION($f3)
 {
+    if(!empty($_POST))
+    {
+        //store user information
+        $fname = $_POST['fname'];
+        $result = $_POST['surv'];
+
+        //store to F3 variables
+        $f3->set('result', $result);
+        $f3->set('fname', $fname);
+
+
+        $_SESSION['result'] = implode(', ', $result);
+        $_SESSION['fname']  = $fname;
+
+        $f3->reroute('/summary');
+    }
     //display a view
     $view = new Template();
     echo $view-> render('views/survey.html');
 });
+
+$f3->route('GET|POST /summary', FUNCTION()
+{
+    //display a view
+    $view = new Template();
+    echo $view-> render('views/summary.html');
+});
+
+
 $f3->run();
