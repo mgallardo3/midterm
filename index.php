@@ -22,11 +22,20 @@ $f3 = Base::instance();
 //Turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
 
+$f3->set('survey', array('This midterm is easy','I like midterms', 'Today is Monday'));
+
 //This route links to a survey
 $f3->route('GET /', function()
 {
     echo "<h1>Midterm Survey</h1>";
-    echo "<a href='views/survey.html'>Take my survey</a>";
+    echo "<a href='survey'>Take my survey</a>";
 });
 
+//Add a post route
+$f3->route('GET|POST /survey', FUNCTION()
+{
+    //display a view
+    $view = new Template();
+    echo $view-> render('views/survey.html');
+});
 $f3->run();
