@@ -15,6 +15,8 @@ error_reporting(E_ALL);
 
 //Require the autoload file
 require_once('vendor/autoload.php');
+require_once('model/validate-input.php');
+
 
 //Create an instance of the Base class
 $f3 = Base::instance();
@@ -44,11 +46,12 @@ $f3->route('GET|POST /survey', FUNCTION($f3)
         $f3->set('result', $result);
         $f3->set('fname', $fname);
 
-
-        $_SESSION['result'] = implode(', ', $result);
-        $_SESSION['fname']  = $fname;
-
-        $f3->reroute('/summary');
+        if (validForm())
+        {
+            $_SESSION['result'] = implode(', ', $result);
+            $_SESSION['fname'] = $fname;
+            $f3->reroute('/summary');
+        }
     }
     //display a view
     $view = new Template();
